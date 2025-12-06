@@ -1,153 +1,340 @@
-#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS 
 #include<iostream>
-#include <cstring>
+#include<cstring>
 #include<string>
 
 using namespace std;
 
-/*  CLASA MASINA */
+/* CLASA MASINA */
 
 class Masina {
+private:
+    const int idMasina;
+    static int nrMasini;
+
+    char* marca;
+    char* model;
+    int anFabricatie;
+    float pret;
+    bool esteNoua;
+
 public:
-	const int idMasina;
-	static int nrMasini;
+    Masina() : idMasina(++nrMasini) {
+        marca = new char[strlen("Necunoscuta") + 1];
+        strcpy(marca, "Necunoscuta");
 
-	char* marca;
-	char* model;
-	int anFabricatie;
-	float pret;
-	bool esteNoua;
+        model = new char[strlen("N/A") + 1];
+        strcpy(model, "N/A");
 
-	Masina() : idMasina(++nrMasini) {
-		marca = new char[strlen("Necunoscuta") + 1];
-		strcpy(marca, "Necunoscuta");
+        anFabricatie = 0;
+        pret = 0;
+        esteNoua = false;
+    }
 
-		model = new char[strlen("N/A") + 1];
-		strcpy(model, "N/A");
+    Masina(const char* marca) : idMasina(++nrMasini) {
+        this->marca = new char[strlen(marca) + 1];
+        strcpy(this->marca, marca);
 
-		anFabricatie = 0;
-		pret = 0;
-		esteNoua = false;
-	}
+        model = new char[strlen("N/A") + 1];
+        strcpy(model, "N/A");
 
-	Masina(const char* marca) : idMasina(++nrMasini) {
-		this->marca = new char[strlen(marca) + 1];
-		strcpy(this->marca, marca);
+        anFabricatie = 0;
+        pret = 0;
+        esteNoua = false;
+    }
 
-		model = new char[strlen("N/A") + 1];
-		strcpy(model, "N/A");
+    Masina(const char* marca, const char* model, int anFabricatie, float pret, bool esteNoua)
+        : idMasina(++nrMasini) {
+        this->marca = new char[strlen(marca) + 1];
+        strcpy(this->marca, marca);
 
-		anFabricatie = 0;
-		pret = 0;
-		esteNoua = false;
-	}
+        this->model = new char[strlen(model) + 1];
+        strcpy(this->model, model);
 
-	Masina(const char* marca, const char* model, int anFabricatie, float pret, bool esteNoua)
-		: idMasina(++nrMasini) {
-		this->marca = new char[strlen(marca) + 1];
-		strcpy(this->marca, marca);
+        this->anFabricatie = anFabricatie;
+        this->pret = pret;
+        this->esteNoua = esteNoua;
+    }
 
-		this->model = new char[strlen(model) + 1];
-		strcpy(this->model, model);
+    Masina(const Masina& m) : idMasina(++nrMasini) {
+        if (m.marca != nullptr) {
+            marca = new char[strlen(m.marca) + 1];
+            strcpy(marca, m.marca);
+        }
+        else {
+            marca = nullptr;
+        }
 
-		this->anFabricatie = anFabricatie;
-		this->pret = pret;
-		this->esteNoua = esteNoua;
-	}
+        if (m.model != nullptr) {
+            model = new char[strlen(m.model) + 1];
+            strcpy(model, m.model);
+        }
+        else {
+            model = nullptr;
+        }
 
-	static float aplicaDiscount(float pretInitial, float procent) {
-		return pretInitial * (1 - procent / 100.0f);
-	}
+        anFabricatie = m.anFabricatie;
+        pret = m.pret;
+        esteNoua = m.esteNoua;
+    }
 
-	void afisareMasina() {
-		cout << endl << this->idMasina << ". Masina ";
-		if (this->marca != nullptr) {
-			cout << this->marca;
-		}
-		else {
-			cout << "Nespecificata";
-		}
+    ~Masina() {
+        if (marca != nullptr) {
+            delete[] marca;
+        }
+        if (model != nullptr) {
+            delete[] model;
+        }
+    }
 
-		cout << " " << (this->model != nullptr ? this->model : "N/A");
-		cout << ", anul " << this->anFabricatie;
-		cout << ", pret " << this->pret << " EUR";
-		cout << ", " << (this->esteNoua ? "NOUA" : "SH");
-		cout << ".";
-	}
+    int getIdMasina() {
+        return idMasina;
+    }
+
+    static int getNrMasini() {
+        return nrMasini;
+    }
+
+    const char* getMarca() {
+        return marca;
+    }
+
+    const char* getModel() {
+        return model;
+    }
+
+    int getAnFabricatie() {
+        return anFabricatie;
+    }
+
+    float getPret() {
+        return pret;
+    }
+
+    bool getEsteNoua() {
+        return esteNoua;
+    }
+
+    void setMarca(const char* marcaNoua) {
+        if (marcaNoua != nullptr && strlen(marcaNoua) > 0) {
+            if (marca != nullptr) {
+                delete[] marca;
+            }
+            marca = new char[strlen(marcaNoua) + 1];
+            strcpy(marca, marcaNoua);
+        }
+    }
+
+    void setModel(const char* modelNou) {
+        if (modelNou != nullptr && strlen(modelNou) > 0) {
+            if (model != nullptr) {
+                delete[] model;
+            }
+            model = new char[strlen(modelNou) + 1];
+            strcpy(model, modelNou);
+        }
+    }
+
+    void setAnFabricatie(int an) {
+        if (an > 0) {
+            anFabricatie = an;
+        }
+    }
+
+    void setPret(float pretNou) {
+        if (pretNou >= 0) {
+            pret = pretNou;
+        }
+    }
+
+    void setEsteNoua(bool esteNouaNoua) {
+        esteNoua = esteNouaNoua;
+    }
+
+    static float aplicaDiscount(float pretInitial, float procent) {
+        return pretInitial * (1 - procent / 100.0f);
+    }
+
+    void afisareMasina() {
+        cout << endl << idMasina << ". Masina ";
+        if (marca != nullptr) {
+            cout << marca;
+        }
+        else {
+            cout << "Nespecificata";
+        }
+
+        cout << " " << (model != nullptr ? model : "N/A");
+        cout << ", anul " << anFabricatie;
+        cout << ", pret " << pret << " EUR";
+        cout << ", " << (esteNoua ? "NOUA" : "SH");
+        cout << ".";
+    }
+
+    friend float valoareTotalaMasiniNoi(Masina* masini, int nr);
 };
 
 int Masina::nrMasini = 0;
 
 
-/* CLASA MOTOCICLETA  */
+/* CLASA MOTOCICLETA */
 
 enum TipMotocicleta { SPORT = 1, TOURING = 2, SCOOTER = 3 };
 
 class Motocicleta {
+private:
+    const int idMotocicleta;
+    static int nrMotociclete;
+
+    char* marca;
+    char* model;
+    int nrKm;
+    TipMotocicleta tip;
+
 public:
-	const int idMotocicleta;
-	static int nrMotociclete;
+    Motocicleta() : idMotocicleta(++nrMotociclete) {
+        marca = new char[strlen("Necunoscuta") + 1];
+        strcpy(marca, "Necunoscuta");
 
-	char* marca;
-	char* model;
-	int nrKm;
-	TipMotocicleta tip;
+        model = new char[strlen("N/A") + 1];
+        strcpy(model, "N/A");
 
-	Motocicleta() : idMotocicleta(++nrMotociclete) {
-		marca = new char[strlen("Necunoscuta") + 1];
-		strcpy(marca, "Necunoscuta");
+        nrKm = 0;
+        tip = SPORT;
+    }
 
-		model = new char[strlen("N/A") + 1];
-		strcpy(model, "N/A");
+    Motocicleta(const char* marca, const char* model) : idMotocicleta(++nrMotociclete) {
+        this->marca = new char[strlen(marca) + 1];
+        strcpy(this->marca, marca);
 
-		nrKm = 0;
-		tip = SPORT;
-	}
+        this->model = new char[strlen(model) + 1];
+        strcpy(this->model, model);
 
-	Motocicleta(const char* marca, const char* model) : idMotocicleta(++nrMotociclete) {
-		this->marca = new char[strlen(marca) + 1];
-		strcpy(this->marca, marca);
+        nrKm = 0;
+        tip = SPORT;
+    }
 
-		this->model = new char[strlen(model) + 1];
-		strcpy(this->model, model);
+    Motocicleta(const char* marca, const char* model, int nrKm, TipMotocicleta tip)
+        : idMotocicleta(++nrMotociclete) {
+        this->marca = new char[strlen(marca) + 1];
+        strcpy(this->marca, marca);
 
-		nrKm = 0;
-		tip = SPORT;
-	}
+        this->model = new char[strlen(model) + 1];
+        strcpy(this->model, model);
 
-	Motocicleta(const char* marca, const char* model, int nrKm, TipMotocicleta tip)
-		: idMotocicleta(++nrMotociclete) {
-		this->marca = new char[strlen(marca) + 1];
-		strcpy(this->marca, marca);
+        this->nrKm = nrKm;
+        this->tip = tip;
+    }
 
-		this->model = new char[strlen(model) + 1];
-		strcpy(this->model, model);
+    Motocicleta(const Motocicleta& m) : idMotocicleta(++nrMotociclete) {
+        if (m.marca != nullptr) {
+            marca = new char[strlen(m.marca) + 1];
+            strcpy(marca, m.marca);
+        }
+        else {
+            marca = nullptr;
+        }
 
-		this->nrKm = nrKm;
-		this->tip = tip;
-	}
+        if (m.model != nullptr) {
+            model = new char[strlen(m.model) + 1];
+            strcpy(model, m.model);
+        }
+        else {
+            model = nullptr;
+        }
 
-	static int kilometriMediu(int km1, int km2) {
-		return (km1 + km2) / 2;
-	}
+        nrKm = m.nrKm;
+        tip = m.tip;
+    }
 
-	void afisareMotocicleta() {
-		cout << endl << this->idMotocicleta << ". Motocicleta ";
-		if (this->marca != nullptr) {
-			cout << this->marca;
-		}
-		else {
-			cout << "Nespecificata";
-		}
-		cout << " " << (this->model != nullptr ? this->model : "N/A");
-		cout << " are " << this->nrKm << " km, tip ";
+    ~Motocicleta() {
+        if (marca != nullptr) {
+            delete[] marca;
+        }
+        if (model != nullptr) {
+            delete[] model;
+        }
+    }
 
-		if (this->tip == SPORT) cout << "SPORT";
-		else if (this->tip == TOURING) cout << "TOURING";
-		else cout << "SCOOTER";
+    int getIdMotocicleta() {
+        return idMotocicleta;
+    }
 
-		cout << ".";
-	}
+    static int getNrMotociclete() {
+        return nrMotociclete;
+    }
+
+    const char* getMarca() {
+        return marca;
+    }
+
+    const char* getModel() {
+        return model;
+    }
+
+    int getNrKm() {
+        return nrKm;
+    }
+
+    TipMotocicleta getTip() {
+        return tip;
+    }
+
+    void setMarca(const char* marcaNoua) {
+        if (marcaNoua != nullptr && strlen(marcaNoua) > 0) {
+            if (marca != nullptr) {
+                delete[] marca;
+            }
+            marca = new char[strlen(marcaNoua) + 1];
+            strcpy(marca, marcaNoua);
+        }
+    }
+
+    void setModel(const char* modelNou) {
+        if (modelNou != nullptr && strlen(modelNou) > 0) {
+            if (model != nullptr) {
+                delete[] model;
+            }
+            model = new char[strlen(modelNou) + 1];
+            strcpy(model, modelNou);
+        }
+    }
+
+    void setNrKm(int km) {
+        if (km >= 0) {
+            nrKm = km;
+        }
+    }
+
+    void setTip(TipMotocicleta tipNou) {
+        tip = tipNou;
+    }
+
+    static int kilometriMediu(int km1, int km2) {
+        return (km1 + km2) / 2;
+    }
+
+    void afisareMotocicleta() {
+        cout << endl << idMotocicleta << ". Motocicleta ";
+        if (marca != nullptr) {
+            cout << marca;
+        }
+        else {
+            cout << "Nespecificata";
+        }
+        cout << " " << (model != nullptr ? model : "N/A");
+        cout << " are " << nrKm << " km, tip ";
+        if (tip == SPORT) {
+            cout << "SPORT";
+        }
+        else if (tip == TOURING) {
+            cout << "TOURING";
+        }
+        else {
+            cout << "SCOOTER";
+        }
+        cout << ".";
+    }
 };
 
 int Motocicleta::nrMotociclete = 0;
@@ -156,116 +343,256 @@ int Motocicleta::nrMotociclete = 0;
 /* CLASA CLIENT */
 
 class Client {
+private:
+    const int idClient;
+    static int nrClienti;
+
+    char* nume;
+    int varsta;
+    char* oras;
+    bool esteFidel;
+
 public:
-	const int idClient;
-	static int nrClienti;
+    Client() : idClient(++nrClienti) {
+        nume = new char[strlen("Anonim") + 1];
+        strcpy(nume, "Anonim");
 
-	char* nume;
-	int varsta;
-	char* oras;
-	bool esteFidel;
+        oras = new char[strlen("Necunoscut") + 1];
+        strcpy(oras, "Necunoscut");
 
-	Client() : idClient(++nrClienti) {
-		nume = new char[strlen("Anonim") + 1];
-		strcpy(nume, "Anonim");
+        varsta = 0;
+        esteFidel = false;
+    }
 
-		oras = new char[strlen("Necunoscut") + 1];
-		strcpy(oras, "Necunoscut");
+    Client(const char* nume) : idClient(++nrClienti) {
+        this->nume = new char[strlen(nume) + 1];
+        strcpy(this->nume, nume);
 
-		varsta = 0;
-		esteFidel = false;
-	}
+        oras = new char[strlen("Necunoscut") + 1];
+        strcpy(oras, "Necunoscut");
 
-	Client(const char* nume) : idClient(++nrClienti) {
-		this->nume = new char[strlen(nume) + 1];
-		strcpy(this->nume, nume);
+        varsta = 0;
+        esteFidel = false;
+    }
 
-		oras = new char[strlen("Necunoscut") + 1];
-		strcpy(oras, "Necunoscut");
+    Client(const char* nume, int varsta, const char* oras, bool esteFidel)
+        : idClient(++nrClienti) {
+        this->nume = new char[strlen(nume) + 1];
+        strcpy(this->nume, nume);
 
-		varsta = 0;
-		esteFidel = false;
-	}
+        this->oras = new char[strlen(oras) + 1];
+        strcpy(this->oras, oras);
 
-	Client(const char* nume, int varsta, const char* oras, bool esteFidel)
-		: idClient(++nrClienti) {
-		this->nume = new char[strlen(nume) + 1];
-		strcpy(this->nume, nume);
+        this->varsta = varsta;
+        this->esteFidel = esteFidel;
+    }
 
-		this->oras = new char[strlen(oras) + 1];
-		strcpy(this->oras, oras);
+    Client(const Client& c) : idClient(++nrClienti) {
+        if (c.nume != nullptr) {
+            nume = new char[strlen(c.nume) + 1];
+            strcpy(nume, c.nume);
+        }
+        else {
+            nume = nullptr;
+        }
 
-		this->varsta = varsta;
-		this->esteFidel = esteFidel;
-	}
+        if (c.oras != nullptr) {
+            oras = new char[strlen(c.oras) + 1];
+            strcpy(oras, c.oras);
+        }
+        else {
+            oras = nullptr;
+        }
 
-	static float procentClientiFideli(int nrFideli, int total) {
-		if (total > 0) {
-			return (float)nrFideli * 100 / total;
-		}
-		return 0;
-	}
+        varsta = c.varsta;
+        esteFidel = c.esteFidel;
+    }
 
-	void afisareClient() {
-		cout << endl << this->idClient << ". Clientul ";
-		if (this->nume != nullptr) {
-			cout << this->nume;
-		}
-		else {
-			cout << "Neidentificat";
-		}
-		cout << ", varsta " << this->varsta;
-		cout << ", oras " << (this->oras != nullptr ? this->oras : "Necunoscut");
-		cout << ", " << (this->esteFidel ? "FIDEL" : "nefidel");
-		cout << ".";
-	}
+    ~Client() {
+        if (nume != nullptr) {
+            delete[] nume;
+        }
+        if (oras != nullptr) {
+            delete[] oras;
+        }
+    }
+
+    int getIdClient() {
+        return idClient;
+    }
+
+    static int getNrClienti() {
+        return nrClienti;
+    }
+
+    const char* getNume() {
+        return nume;
+    }
+
+    int getVarsta() {
+        return varsta;
+    }
+
+    const char* getOras() {
+        return oras;
+    }
+
+    bool getEsteFidel() {
+        return esteFidel;
+    }
+
+    void setNume(const char* numeNou) {
+        if (numeNou != nullptr && strlen(numeNou) > 0) {
+            if (nume != nullptr) {
+                delete[] nume;
+            }
+            nume = new char[strlen(numeNou) + 1];
+            strcpy(nume, numeNou);
+        }
+    }
+
+    void setVarsta(int varstaNoua) {
+        if (varstaNoua >= 0) {
+            varsta = varstaNoua;
+        }
+    }
+
+    void setOras(const char* orasNou) {
+        if (orasNou != nullptr && strlen(orasNou) > 0) {
+            if (oras != nullptr) {
+                delete[] oras;
+            }
+            oras = new char[strlen(orasNou) + 1];
+            strcpy(oras, orasNou);
+        }
+    }
+
+    void setEsteFidel(bool esteFidelNou) {
+        esteFidel = esteFidelNou;
+    }
+
+    static float procentClientiFideli(int nrFideli, int total) {
+        if (total > 0) {
+            return (float)nrFideli * 100 / total;
+        }
+        return 0;
+    }
+
+    void afisareClient() {
+        cout << endl << idClient << ". Clientul ";
+        if (nume != nullptr) {
+            cout << nume;
+        }
+        else {
+            cout << "Neidentificat";
+        }
+        cout << ", varsta " << varsta;
+        cout << ", oras " << (oras != nullptr ? oras : "Necunoscut");
+        cout << ", " << (esteFidel ? "FIDEL" : "nefidel");
+        cout << ".";
+    }
+
+    friend int numarClientiFideliDinOras(Client* clienti, int nr, const char* orasCautat);
 };
 
 int Client::nrClienti = 0;
+
+
+/* FUNCTII PRIETENE FAZA 2 */
+
+float valoareTotalaMasiniNoi(Masina* masini, int nr) {
+    float suma = 0;
+    for (int i = 0; i < nr; i++) {
+        if (masini[i].esteNoua) {
+            suma += masini[i].pret;
+        }
+    }
+    return suma;
+}
+
+int numarClientiFideliDinOras(Client* clienti, int nr, const char* orasCautat) {
+    int contor = 0;
+    for (int i = 0; i < nr; i++) {
+        if (clienti[i].esteFidel &&
+            clienti[i].oras != nullptr &&
+            strcmp(clienti[i].oras, orasCautat) == 0) {
+            contor++;
+        }
+    }
+    return contor;
+}
 
 
 /* MAIN */
 
 void main() {
 
-	cout << "Proiect POO - Faza 1 (AMCM - domeniu Auto: Masini, Clienti si Motociclete)" << endl;
+    cout << "Proiect POO - Faza 2 (AMCM - domeniu Auto: Masini, Clienti si Motociclete)" << endl;
+
+    // MASINI
+    Masina m1;
+    Masina m2("Dacia");
+    Masina m3("Audi", "A4", 2019, 18500, false);
+    Masina m4(m3);
+
+    m3.setEsteNoua(true);
+
+    m1.afisareMasina();
+    m2.afisareMasina();
+    m3.afisareMasina();
+    m4.afisareMasina();
+
+    cout << endl << "Pret m3 cu 10% discount: "
+        << Masina::aplicaDiscount(m3.getPret(), 10);
+
+    cout << endl << "Numar masini create: " << Masina::getNrMasini();
+
+    Masina vectorMasini[4] = { m1, m2, m3, m4 };
+    cout << endl << "Valoare masini noi: "
+        << valoareTotalaMasiniNoi(vectorMasini, 4);
 
 
-	// MASINI
-	Masina m1;
-	Masina m2("Dacia");
-	Masina m3("Audi", "A4", 2019, 18500, false);
+    // MOTOCICLETE
+    Motocicleta moto1;
+    Motocicleta moto2("Honda", "CBR");
+    Motocicleta moto3("Yamaha", "MT-07", 12000, SPORT);
+    Motocicleta moto4(moto3);
 
-	m1.afisareMasina();
-	m2.afisareMasina();
-	m3.afisareMasina();
+    moto1.afisareMotocicleta();
+    moto2.afisareMotocicleta();
+    moto3.afisareMotocicleta();
+    moto4.afisareMotocicleta();
 
-	cout << endl << "Pret m3 cu 10% discount: "
-		<< Masina::aplicaDiscount(m3.pret, 10);
+    cout << endl << "Kilometri medii (moto3 & moto4): "
+        << Motocicleta::kilometriMediu(moto3.getNrKm(), moto4.getNrKm());
+    cout << endl << "Numar motociclete create: " << Motocicleta::getNrMotociclete();
 
-	// MOTOCICLETE
-	Motocicleta moto1;
-	Motocicleta moto2("Honda", "CBR");
-	Motocicleta moto3("Yamaha", "MT-07", 12000, SPORT);
 
-	moto1.afisareMotocicleta();
-	moto2.afisareMotocicleta();
-	moto3.afisareMotocicleta();
 
-	cout << endl << "Kilometri medii (moto2 & moto3): "
-		<< Motocicleta::kilometriMediu(moto2.nrKm, moto3.nrKm);
+    // CLIENTI
+    Client c1;
+    Client c2("Alexandra");
+    Client c3("Marius", 25, "Bucuresti", true);
+    Client c4(c3);
 
-	// CLIENTI
-	Client c1;
-	Client c2("Alexandra");
-	Client c3("Marius", 25, "Bucuresti", true);
+    c2.setOras("Cluj");
+    c2.setVarsta(21);
 
-	c1.afisareClient();
-	c2.afisareClient();
-	c3.afisareClient();
+    c1.afisareClient();
+    c2.afisareClient();
+    c3.afisareClient();
+    c4.afisareClient();
 
-	cout << endl << "Procent clienti fideli (1 din 3): "
-		<< Client::procentClientiFideli(1, Client::nrClienti) << "%";
+    cout << endl << "Numar clienti creati: "
+        << Client::getNrClienti();
 
-	cout << endl << endl << "Sfarsit Faza 1." << endl;
+    cout << endl << "Procent clienti fideli (2 din 4): "
+        << Client::procentClientiFideli(2, 4) << "%";
+
+    Client vectorClienti[4] = { c1, c2, c3, c4 };
+
+    cout << endl << "Clienti fideli din Bucuresti: "
+        << numarClientiFideliDinOras(vectorClienti, 4, "Bucuresti");
+
+    cout << endl << endl << "Sfarsit Faza 2." << endl;
 }

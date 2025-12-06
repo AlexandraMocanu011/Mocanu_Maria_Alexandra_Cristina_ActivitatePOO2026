@@ -31,3 +31,7 @@ build/
 *.cache
 *.tmp
 *.log
+/EX_POO
+/Stdy_POO1
+/test1POO
+/workPOO
