@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS 
+﻿#define _CRT_SECURE_NO_WARNINGS 
 #include<iostream>
 #include<cstring>
 #include<string>
@@ -171,6 +171,42 @@ public:
         cout << ".";
     }
 
+    // operator = (de atribuire)
+    void operator=(const Masina& m) {
+        this->anFabricatie = m.anFabricatie;
+        this->pret = m.pret;
+        this->esteNoua = m.esteNoua;
+
+        if (this->marca != nullptr) {
+            delete[] this->marca;
+            this->marca = nullptr;
+        }
+        if (m.marca != nullptr) {
+            this->marca = new char[strlen(m.marca) + 1];
+            strcpy(this->marca, m.marca);
+        }
+        else {
+            this->marca = nullptr;
+        }
+
+        if (this->model != nullptr) {
+            delete[] this->model;
+            this->model = nullptr;
+        }
+        if (m.model != nullptr) {
+            this->model = new char[strlen(m.model) + 1];
+            strcpy(this->model, m.model);
+        }
+        else {
+            this->model = nullptr;
+        }
+    }
+
+    // comparatie dupa pret
+    bool operator<(const Masina& m) {
+        return this->pret < m.pret;
+    }
+
     friend float valoareTotalaMasiniNoi(Masina* masini, int nr);
 };
 
@@ -335,6 +371,41 @@ public:
         }
         cout << ".";
     }
+
+    // operator = (de atribuire)
+    void operator=(const Motocicleta& m) {
+        this->nrKm = m.nrKm;
+        this->tip = m.tip;
+
+        if (this->marca != nullptr) {
+            delete[] this->marca;
+            this->marca = nullptr;
+        }
+        if (m.marca != nullptr) {
+            this->marca = new char[strlen(m.marca) + 1];
+            strcpy(this->marca, m.marca);
+        }
+        else {
+            this->marca = nullptr;
+        }
+
+        if (this->model != nullptr) {
+            delete[] this->model;
+            this->model = nullptr;
+        }
+        if (m.model != nullptr) {
+            this->model = new char[strlen(m.model) + 1];
+            strcpy(this->model, m.model);
+        }
+        else {
+            this->model = nullptr;
+        }
+    }
+
+    // comparatie dupa nrKm
+    bool operator<(const Motocicleta& m) {
+        return this->nrKm < m.nrKm;
+    }
 };
 
 int Motocicleta::nrMotociclete = 0;
@@ -492,6 +563,41 @@ public:
         cout << ".";
     }
 
+    // operator = (de atribuire)
+    void operator=(const Client& c) {
+        this->varsta = c.varsta;
+        this->esteFidel = c.esteFidel;
+
+        if (this->nume != nullptr) {
+            delete[] this->nume;
+            this->nume = nullptr;
+        }
+        if (c.nume != nullptr) {
+            this->nume = new char[strlen(c.nume) + 1];
+            strcpy(this->nume, c.nume);
+        }
+        else {
+            this->nume = nullptr;
+        }
+
+        if (this->oras != nullptr) {
+            delete[] this->oras;
+            this->oras = nullptr;
+        }
+        if (c.oras != nullptr) {
+            this->oras = new char[strlen(c.oras) + 1];
+            strcpy(this->oras, c.oras);
+        }
+        else {
+            this->oras = nullptr;
+        }
+    }
+
+    // comparatie dupa varsta
+    bool operator<(const Client& c) {
+        return this->varsta < c.varsta;
+    }
+
     friend int numarClientiFideliDinOras(Client* clienti, int nr, const char* orasCautat);
 };
 
@@ -527,7 +633,7 @@ int numarClientiFideliDinOras(Client* clienti, int nr, const char* orasCautat) {
 
 void main() {
 
-    cout << "Proiect POO - Faza 2 (AMCM - domeniu Auto: Masini, Clienti si Motociclete)" << endl;
+    cout << "Proiect POO - Faza 3 - Commit 3 (operator= si operator<)" << endl;
 
     // MASINI
     Masina m1;
@@ -537,10 +643,14 @@ void main() {
 
     m3.setEsteNoua(true);
 
+    Masina m5;
+    m5 = m3; // test operator= pentru Masina
+
     m1.afisareMasina();
     m2.afisareMasina();
     m3.afisareMasina();
     m4.afisareMasina();
+    m5.afisareMasina();
 
     cout << endl << "Pret m3 cu 10% discount: "
         << Masina::aplicaDiscount(m3.getPret(), 10);
@@ -551,6 +661,13 @@ void main() {
     cout << endl << "Valoare masini noi: "
         << valoareTotalaMasiniNoi(vectorMasini, 4);
 
+    if (m2 < m3) {
+        cout << endl << "Masina m2 este mai ieftina decat masina m3.";
+    }
+    else {
+        cout << endl << "Masina m3 este mai ieftina sau egala ca pret cu masina m2.";
+    }
+
 
     // MOTOCICLETE
     Motocicleta moto1;
@@ -558,15 +675,25 @@ void main() {
     Motocicleta moto3("Yamaha", "MT-07", 12000, SPORT);
     Motocicleta moto4(moto3);
 
+    Motocicleta moto5;
+    moto5 = moto3; // test operator= pentru Motocicleta
+
     moto1.afisareMotocicleta();
     moto2.afisareMotocicleta();
     moto3.afisareMotocicleta();
     moto4.afisareMotocicleta();
+    moto5.afisareMotocicleta();
 
     cout << endl << "Kilometri medii (moto3 & moto4): "
         << Motocicleta::kilometriMediu(moto3.getNrKm(), moto4.getNrKm());
     cout << endl << "Numar motociclete create: " << Motocicleta::getNrMotociclete();
 
+    if (moto1 < moto3) {
+        cout << endl << "Motocicleta moto1 are mai putini kilometri decat moto3.";
+    }
+    else {
+        cout << endl << "Motocicleta moto3 are mai putini sau egali kilometri fata de moto1.";
+    }
 
 
     // CLIENTI
@@ -578,10 +705,14 @@ void main() {
     c2.setOras("Cluj");
     c2.setVarsta(21);
 
+    Client c5;
+    c5 = c3; // test operator= pentru Client
+
     c1.afisareClient();
     c2.afisareClient();
     c3.afisareClient();
     c4.afisareClient();
+    c5.afisareClient();
 
     cout << endl << "Numar clienti creati: "
         << Client::getNrClienti();
@@ -594,5 +725,12 @@ void main() {
     cout << endl << "Clienti fideli din Bucuresti: "
         << numarClientiFideliDinOras(vectorClienti, 4, "Bucuresti");
 
-    cout << endl << endl << "Sfarsit Faza 2." << endl;
+    if (c2 < c3) {
+        cout << endl << "Clientul c2 este mai tanar decat clientul c3.";
+    }
+    else {
+        cout << endl << "Clientul c3 este mai tanar sau de aceeasi varsta cu clientul c2.";
+    }
+
+    cout << endl << endl << " Commit 3." << endl;
 }
