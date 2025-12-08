@@ -207,6 +207,16 @@ public:
         return this->pret < m.pret;
     }
 
+    // operator += (mareste pretul)
+    void operator+=(float valoare) {
+        this->pret += valoare;
+    }
+
+    // operator ! (true daca masina NU este noua)
+    bool operator!() {
+        return !this->esteNoua;
+    }
+
     friend float valoareTotalaMasiniNoi(Masina* masini, int nr);
 };
 
@@ -406,6 +416,16 @@ public:
     bool operator<(const Motocicleta& m) {
         return this->nrKm < m.nrKm;
     }
+
+    // operator += (creste numarul de km)
+    void operator+=(int km) {
+        this->nrKm += km;
+    }
+
+    // operator ! (true daca are 0 km)
+    bool operator!() {
+        return this->nrKm == 0;
+    }
 };
 
 int Motocicleta::nrMotociclete = 0;
@@ -598,6 +618,16 @@ public:
         return this->varsta < c.varsta;
     }
 
+    // operator += (creste varsta)
+    void operator+=(int ani) {
+        this->varsta += ani;
+    }
+
+    // operator ! (true daca NU este fidel)
+    bool operator!() {
+        return !this->esteFidel;
+    }
+
     friend int numarClientiFideliDinOras(Client* clienti, int nr, const char* orasCautat);
 };
 
@@ -633,7 +663,7 @@ int numarClientiFideliDinOras(Client* clienti, int nr, const char* orasCautat) {
 
 void main() {
 
-    cout << "Proiect POO - Faza 3 - Commit 3 (operator= si operator<)" << endl;
+    cout << "Proiect POO - Faza 3 - Commit 4 (operator! si operator+=)" << endl;
 
     // MASINI
     Masina m1;
@@ -644,7 +674,9 @@ void main() {
     m3.setEsteNoua(true);
 
     Masina m5;
-    m5 = m3; // test operator= pentru Masina
+    m5 = m3; // operator= Masina
+
+    m2 += 1000; // operator+= Masina
 
     m1.afisareMasina();
     m2.afisareMasina();
@@ -668,6 +700,13 @@ void main() {
         cout << endl << "Masina m3 este mai ieftina sau egala ca pret cu masina m2.";
     }
 
+    if (!m1) {
+        cout << endl << "Masina m1 NU este noua.";
+    }
+    else {
+        cout << endl << "Masina m1 este noua.";
+    }
+
 
     // MOTOCICLETE
     Motocicleta moto1;
@@ -676,7 +715,9 @@ void main() {
     Motocicleta moto4(moto3);
 
     Motocicleta moto5;
-    moto5 = moto3; // test operator= pentru Motocicleta
+    moto5 = moto3; // operator= Motocicleta
+
+    moto2 += 500; // operator+= Motocicleta
 
     moto1.afisareMotocicleta();
     moto2.afisareMotocicleta();
@@ -695,6 +736,13 @@ void main() {
         cout << endl << "Motocicleta moto3 are mai putini sau egali kilometri fata de moto1.";
     }
 
+    if (!moto1) {
+        cout << endl << "Motocicleta moto1 are 0 km.";
+    }
+    else {
+        cout << endl << "Motocicleta moto1 are cel putin 1 km.";
+    }
+
 
     // CLIENTI
     Client c1;
@@ -706,7 +754,9 @@ void main() {
     c2.setVarsta(21);
 
     Client c5;
-    c5 = c3; // test operator= pentru Client
+    c5 = c3; // operator= Client
+
+    c1 += 5; // operator+= Client (creste varsta lui c1 cu 5 ani)
 
     c1.afisareClient();
     c2.afisareClient();
@@ -717,6 +767,7 @@ void main() {
     cout << endl << "Numar clienti creati: "
         << Client::getNrClienti();
 
+    // *** LINIA CORECTATA: 2 din 4, nu 2 din 5 ***
     cout << endl << "Procent clienti fideli (2 din 4): "
         << Client::procentClientiFideli(2, 4) << "%";
 
@@ -732,5 +783,12 @@ void main() {
         cout << endl << "Clientul c3 este mai tanar sau de aceeasi varsta cu clientul c2.";
     }
 
-    cout << endl << endl << " Commit 3." << endl;
+    if (!c1) {
+        cout << endl << "Clientul c1 NU este fidel.";
+    }
+    else {
+        cout << endl << "Clientul c1 este fidel.";
+    }
+
+    cout << endl << endl << "Sfarsit Faza 3 - Commit 4." << endl;
 }
