@@ -663,7 +663,7 @@ int numarClientiFideliDinOras(Client* clienti, int nr, const char* orasCautat) {
 
 void main() {
 
-    cout << "Proiect POO - Faza 3 - Commit 4 (operator! si operator+=)" << endl;
+    cout << "Proiect POO - Faza 3 - Commit 4 (operatori ! si +=)" << endl;
 
     // MASINI
     Masina m1;
@@ -767,9 +767,8 @@ void main() {
     cout << endl << "Numar clienti creati: "
         << Client::getNrClienti();
 
-    // *** LINIA CORECTATA: 2 din 4, nu 2 din 5 ***
-    cout << endl << "Procent clienti fideli (2 din 4): "
-        << Client::procentClientiFideli(2, 4) << "%";
+    cout << endl << "Procent clienti fideli (2 din 5): "
+        << Client::procentClientiFideli(2, 5) << "%";
 
     Client vectorClienti[4] = { c1, c2, c3, c4 };
 
@@ -791,4 +790,106 @@ void main() {
     }
 
     cout << endl << endl << "Sfarsit Faza 3 - Commit 4." << endl;
+
+
+    /* ================== FAZA 4 – VECTORI SI MATRICE (COMMIT 5) ================== */
+
+    cout << endl << endl << "Faza 4 – vectori si matrice (Commit 5)" << endl;
+
+    // ----------------- VECTOR MASINI -----------------
+
+    int nrMasiniVector;
+    cout << endl << "Numar masini in vector: ";
+    cin >> nrMasiniVector;
+    cin.ignore();
+
+    if (nrMasiniVector <= 0) {
+        cout << "Numar invalid!" << endl;
+        return;
+    }
+
+    Masina* vectMasini = new Masina[nrMasiniVector];
+
+    for (int i = 0; i < nrMasiniVector; i++) {
+
+        char marca[100], model[100];
+        int an;
+        float pret;
+        int esteNoua;
+
+        cout << endl << "Masina " << i + 1 << " – marca: ";
+        cin >> marca;
+
+        cout << "Masina " << i + 1 << " – model: ";
+        cin >> model;
+
+        cout << "Masina " << i + 1 << " – an fabricatie: ";
+        cin >> an;
+
+        cout << "Masina " << i + 1 << " – pret: ";
+        cin >> pret;
+
+        cout << "Masina " << i + 1 << " – este noua? (1-DA / 0-NU): ";
+        cin >> esteNoua;
+
+        vectMasini[i].setMarca(marca);
+        vectMasini[i].setModel(model);
+        vectMasini[i].setAnFabricatie(an);
+        vectMasini[i].setPret(pret);
+        vectMasini[i].setEsteNoua(esteNoua == 1);
+    }
+
+    cout << endl << "Vector masini (Faza 4):" << endl;
+    for (int i = 0; i < nrMasiniVector; i++) {
+        vectMasini[i].afisareMasina();
+    }
+
+    // ----------------- VECTOR MOTOCICLETE -----------------
+
+    int nrMoto;
+    cout << endl << endl << "Numar motociclete in vector: ";
+    cin >> nrMoto;
+    cin.ignore();
+
+    if (nrMoto <= 0) {
+        cout << "Numar invalid!" << endl;
+        delete[] vectMasini;
+        return;
+    }
+
+    Motocicleta* vectMoto = new Motocicleta[nrMoto];
+
+    for (int i = 0; i < nrMoto; i++) {
+
+        char marcaMoto[100], modelMoto[100];
+        int km;
+        int tip;
+
+        cout << endl << "Moto " << i + 1 << " – marca: ";
+        cin >> marcaMoto;
+
+        cout << "Moto " << i + 1 << " – model: ";
+        cin >> modelMoto;
+
+        cout << "Moto " << i + 1 << " – km: ";
+        cin >> km;
+
+        cout << "Moto " << i + 1 << " – tip (1-SPORT, 2-TOURING, 3-SCOOTER): ";
+        cin >> tip;
+
+        vectMoto[i].setMarca(marcaMoto);
+        vectMoto[i].setModel(modelMoto);
+        vectMoto[i].setNrKm(km);
+        vectMoto[i].setTip((TipMotocicleta)tip);
+    }
+
+    cout << endl << "Vector motociclete (Faza 4):" << endl;
+    for (int i = 0; i < nrMoto; i++) {
+        vectMoto[i].afisareMotocicleta();
+    }
+
+    delete[] vectMasini;
+    delete[] vectMoto;
+
+    cout << endl << endl << "Sfarsit Faza 4 - Commit 5." << endl;
 }
