@@ -817,19 +817,19 @@ void main() {
         float pret;
         int esteNoua;
 
-        cout << endl << "Masina " << i + 1 << " – marca: ";
+        cout << endl << "Masina " << i + 1 << " - marca: ";
         cin >> marca;
 
-        cout << "Masina " << i + 1 << " – model: ";
+        cout << "Masina " << i + 1 << " - model: ";
         cin >> model;
 
-        cout << "Masina " << i + 1 << " – an fabricatie: ";
+        cout << "Masina " << i + 1 << " - an fabricatie: ";
         cin >> an;
 
-        cout << "Masina " << i + 1 << " – pret: ";
+        cout << "Masina " << i + 1 << " - pret: ";
         cin >> pret;
 
-        cout << "Masina " << i + 1 << " – este noua? (1-DA / 0-NU): ";
+        cout << "Masina " << i + 1 << " - este noua? (1-DA / 0-NU): ";
         cin >> esteNoua;
 
         vectMasini[i].setMarca(marca);
@@ -865,16 +865,16 @@ void main() {
         int km;
         int tip;
 
-        cout << endl << "Moto " << i + 1 << " – marca: ";
+        cout << endl << "Moto " << i + 1 << " - marca: ";
         cin >> marcaMoto;
 
-        cout << "Moto " << i + 1 << " – model: ";
+        cout << "Moto " << i + 1 << " - model: ";
         cin >> modelMoto;
 
-        cout << "Moto " << i + 1 << " – km: ";
+        cout << "Moto " << i + 1 << " - km: ";
         cin >> km;
 
-        cout << "Moto " << i + 1 << " – tip (1-SPORT, 2-TOURING, 3-SCOOTER): ";
+        cout << "Moto " << i + 1 << " - tip (1-SPORT, 2-TOURING, 3-SCOOTER): ";
         cin >> tip;
 
         vectMoto[i].setMarca(marcaMoto);
@@ -892,4 +892,80 @@ void main() {
     delete[] vectMoto;
 
     cout << endl << endl << "Sfarsit Faza 4 - Commit 5." << endl;
+
+
+    /* ================== FAZA 5 – MATRICE + PRELUCRARE (COMMIT 6) ================== */
+
+    cout << endl << endl << "Faza 5 - matrice + prelucrare (Commit 6)" << endl;
+
+    Masina matriceMasini[2][2];
+
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+
+            char marcaM[100], modelM[100];
+            int an;
+            float pret;
+            int esteNoua;
+
+            cout << endl << "Matrice masini [" << i << "][" << j << "] - marca: ";
+            cin >> marcaM;
+
+            cout << "Matrice masini [" << i << "][" << j << "] - model: ";
+            cin >> modelM;
+
+            cout << "Matrice masini [" << i << "][" << j << "] - an fabricatie: ";
+            cin >> an;
+
+            cout << "Matrice masini [" << i << "][" << j << "] - pret: ";
+            cin >> pret;
+
+            cout << "Matrice masini [" << i << "][" << j << "] - este noua? (1-DA / 0-NU): ";
+            cin >> esteNoua;
+
+            matriceMasini[i][j].setMarca(marcaM);
+            matriceMasini[i][j].setModel(modelM);
+            matriceMasini[i][j].setAnFabricatie(an);
+            matriceMasini[i][j].setPret(pret);
+            matriceMasini[i][j].setEsteNoua(esteNoua == 1);
+        }
+    }
+
+    cout << endl << "Afisare matrice masini (Commit 6):" << endl;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            matriceMasini[i][j].afisareMasina();
+        }
+        cout << endl;
+    }
+
+    // Prelucrare 1: numar ensures
+    int nrMasiniNoiMatrice = 0;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            if (matriceMasini[i][j].getEsteNoua()) {
+                nrMasiniNoiMatrice++;
+            }
+        }
+    }
+    cout << endl << "Numar masini noi in matrice: " << nrMasiniNoiMatrice;
+
+    // Prelucrare 2: masina cu pret maxim
+    int pozI = 0, pozJ = 0;
+    float pretMax = matriceMasini[0][0].getPret();
+
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            if (matriceMasini[i][j].getPret() > pretMax) {
+                pretMax = matriceMasini[i][j].getPret();
+                pozI = i;
+                pozJ = j;
+            }
+        }
+    }
+
+    cout << endl << "Masina cu pret maxim este la pozitia [" << pozI << "][" << pozJ << "]:";
+    matriceMasini[pozI][pozJ].afisareMasina();
+
+    cout << endl << endl << "Sfarsit Faza 5 - Commit 6." << endl;
 }
